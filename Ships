@@ -1,0 +1,262 @@
+package battleshipfinal;
+
+import java.util.Random;
+
+
+public class Ships {
+    
+    //This variable holds the total spaces the ship will take up on the board
+    private int ShipSize;
+    //This variable will keep track of the hits a ship receives
+    private int ShipHealth;
+    //x coordinate in which the ship will begin to be postioned in the board duh!
+    private int x;
+    //y coordinate in which the ship will begin to be postioned in the board duh!
+    private int y;
+    //The board which will contain the position of the Ships
+    private static Board board = new Board();
+    //This random generator is used to randomly generate the starting position of the Ship
+    Random cd = new Random();
+    //this String variable will identify each Ship on the board;
+    private String sym;
+    
+    
+    
+    //Constructing the ship requires a size, and a health variable, and it also Identifies which symbol will represent the Ship
+    public Ships(int size, int health){
+        ShipHealth = health;
+        ShipSize = size;
+        GenerateSym();
+    }
+    //This method identifies the Specific symbol assigned to each ship
+    private void GenerateSym(){
+        if(ShipSize == 4)
+        {
+            sym = "B";
+        }
+        else if(ShipSize == 3)
+        {
+            sym = "C";
+        }
+        else if(ShipSize == 2)
+        {
+            sym = "S";
+        }
+        else if(ShipSize == 5)
+        {
+            sym = "A";
+        }
+        else if(ShipSize == 6)
+        {
+            sym = "T";
+        }
+    
+    }
+    //it...well...Positions the ship on both sides
+    public void PositionShipB1(){
+        GenerateLoc();
+        
+    
+    }
+    public void PositionShipB2(){
+        GenerateLoc2();
+        
+    
+    }
+    public static void printHiddenBoard()
+    {
+        board.printBoard();
+    }
+    //Generates the Location of ships on Player1's board
+    private void GenerateLoc(){
+    
+       Random DownorRight = new Random();
+       int rand = DownorRight.nextInt(2);
+       
+       
+       if(rand == 0){
+           x = cd.nextInt(9-ShipSize);
+           y = cd.nextInt(10);
+           
+            if(CheckSpaceDown())
+            {
+                GenerateLoc();
+            }
+            else{
+                for(int i = 0; i < ShipSize;i++){
+                    board.gameBoard[x+i][y]=sym;
+                }   
+            }
+            
+       }
+       else if(rand == 1){
+           x = cd.nextInt(8);
+           y = cd.nextInt(11-ShipSize);
+           
+           if(CheckSpaceright())
+           {
+               GenerateLoc();
+           }
+           else{
+               for(int i = 0; i < ShipSize;i++){
+                    board.gameBoard[x][y+i]=sym;
+               }
+           }
+                 
+              
+       }
+    }
+    //Generates the Location of ships on player2's board
+    private void GenerateLoc2(){
+    
+       Random DownorRight = new Random();
+       int rand = DownorRight.nextInt(2);
+       
+       
+       if(rand == 0){
+           x = cd.nextInt(9-ShipSize);
+           y = cd.nextInt(10);
+           
+            if(CheckSpaceDown2())
+            {
+                GenerateLoc2();
+            }
+            else{
+                for(int i = 0; i < ShipSize;i++){
+                    board.gameBoard2[x+i][y]=sym;
+                }   
+            }
+            
+       }
+       else if(rand == 1){
+           x = cd.nextInt(8);
+           y = cd.nextInt(11-ShipSize);
+           
+           if(CheckSpaceright2())
+           {
+               GenerateLoc2();
+           }
+           else{
+               for(int i = 0; i < ShipSize;i++){
+                    board.gameBoard2[x][y+i]=sym;
+               }
+           }
+                 
+              
+       }
+    }
+    
+    //checks for ships in Player1's board if the random chose to position the ship downwards
+    private boolean CheckSpaceDown()
+    {
+        for(int i = 0;i < ShipSize;i++)
+        {
+            
+            if(board.gameBoard[x+i][y].equals("B")||board.gameBoard[x+i][y].equals("C")||board.gameBoard[x+i][y].equals("S"))
+                return true;
+        
+        }
+        return false;
+    
+    }
+    //checks for ships in Player1's board if the random chose to position the ship rightwards
+    private boolean CheckSpaceright()
+    {
+        for(int i = 0;i < ShipSize;i++)
+        {
+            
+            if(board.gameBoard[x][y+i].equals("B")||board.gameBoard[x][y+i].equals("C")||board.gameBoard[x][y+i].equals("S"))
+                return true;
+            
+            
+        
+        }
+        
+        return false;
+    
+    }
+    //checks for ships in Player2's board if the random chose to position the ship downwards
+    private boolean CheckSpaceDown2()
+    {
+        for(int i = 0;i < ShipSize;i++)
+        {
+            
+            if(board.gameBoard2[x+i][y].equals("B")||board.gameBoard2[x+i][y].equals("C")||board.gameBoard2[x+i][y].equals("S"))
+                return true;
+        
+        }
+        return false;
+    
+    }
+    //checks for ships in Player2's board if the random chose to position the ship rightwards
+    private boolean CheckSpaceright2()
+    {
+        for(int i = 0;i < ShipSize;i++)
+        {
+            
+            if(board.gameBoard2[x][y+i].equals("B")||board.gameBoard2[x][y+i].equals("C")||board.gameBoard2[x][y+i].equals("S"))
+                return true;
+            
+            
+        
+        }
+        
+        return false;
+    
+    }
+    public static String CheckIfHit(int x, int y, int pTurn)
+    {
+        if(pTurn % 2 == 0)
+        {
+            if(board.gameBoard[x][y].equals("B"))
+            {
+                return "B";
+            }
+            else if(board.gameBoard[x][y].equals("C"))
+            {
+                return "C";
+            }
+            else if(board.gameBoard[x][y].equals("S"))
+            {
+                return "S";
+            }
+            else
+            {
+                return "~";
+            }
+        }
+        else 
+        {   
+            if(board.gameBoard2[x][y].equals("B"))
+            {
+                return "B";
+            }
+            else if(board.gameBoard2[x][y].equals("C"))
+            {
+                return "C";
+            }
+            else if(board.gameBoard2[x][y].equals("S"))
+            {
+                return "S";
+            }
+            else
+            {
+                return "~";
+            }
+        
+        
+        }
+    }
+    
+    public void HitShip()
+    {
+      ShipHealth--;
+    }
+    public boolean Sunk()
+    {
+        if(ShipHealth == 0)
+            return true;
+        return false;
+                    
+    }
+}    
