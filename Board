@@ -1,0 +1,46 @@
+package battleshipfinal;
+
+
+
+public class Board {
+   public String[][] gameBoard = new String[8][10];
+   public String[][] gameBoard2 = new String[8][10];
+   private String empty = "~";
+   
+   public Board(){
+    startBoard();
+   }
+   //Sets each space on the board to empty
+   public void startBoard(){
+       for(int row = 0; row < gameBoard.length;row++){
+           for(int col = 0; col < gameBoard[0].length;col++){
+               gameBoard[row][col] = empty;
+               gameBoard2[row][col] = empty;
+           }
+       }
+   }
+   //Prints the board
+   public void printBoard()
+   {
+   for(int row = 0; row < gameBoard.length;row++)
+       {    for(int col= 0; col < gameBoard[0].length;col++)
+            {   System.out.print(gameBoard[row][col]+" ");
+            }
+            System.out.println();
+       }
+       
+       System.out.println("___________________");
+       System.out.println();
+       
+       for(int row = 0; row < gameBoard2.length;row++)
+       {    for(int col= 0; col < gameBoard2[0].length;col++)
+            {   System.out.print(gameBoard2[row][col]+" ");
+            }
+            System.out.println();
+       }    
+       System.out.println();
+       
+   }
+   //Compares the gameboard to the player board to see if a ship is hit
+   
+}
