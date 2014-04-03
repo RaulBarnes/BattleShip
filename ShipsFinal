@@ -1,0 +1,217 @@
+
+package battleshipfinal;
+
+import java.util.Random;
+
+
+public class Ships {
+    
+    //This variable holds the total spaces the ship will take up on the board
+    private int ShipSize;
+    //This variable will keep track of the hits a ship receives
+    private int ShipHealth;
+    //x coordinate in which the ship will begin to be postioned in the board duh!
+    private int x;
+    //y coordinate in which the ship will begin to be postioned in the board duh!
+    private int y;
+    //The board which will contain the position of the Ships
+    private static Board board = new Board();
+    //This random generator is used to randomly generate the starting position of the Ship
+    Random cd = new Random();
+    //this String variable will identify each Ship on the board;
+    private String sym;
+    
+    
+    
+    //Constructing the ship requires a size, and a health variable, and it also Identifies which symbol will represent the Ship
+    public Ships(int size){
+        ShipHealth = size;
+        ShipSize = size;
+        GenerateSym();
+    }
+    //This method identifies the Specific symbol assigned to each ship
+    private void GenerateSym(){
+        if(ShipSize == 4)
+        {
+            sym = "B";
+        }
+        else if(ShipSize == 3)
+        {
+            sym = "C";
+        }
+        else if(ShipSize == 2)
+        {
+            sym = "S";
+        }
+        else if(ShipSize == 5)
+        {
+            sym = "A";
+        }
+        else if(ShipSize == 6)
+        {
+            sym = "T";
+        }  
+    }
+
+    public static void printHiddenBoard()
+    {
+        board.printBoard();
+    }
+    //Generates the Location of ships on Player1's board
+    public void GenerateLoc(){
+       Random DownorRight = new Random();
+       int rand = DownorRight.nextInt(2);
+       
+       if(rand == 0){
+           x = cd.nextInt(9-ShipSize);
+           y = cd.nextInt(10);
+           
+            if(CheckforShips(rand))
+            {
+                GenerateLoc();
+            }
+            else{
+                for(int i = 0; i < ShipSize;i++){
+                    board.gameBoard[x+i][y]=sym;
+                }   
+            }    
+       }
+       else if(rand == 1){
+           x = cd.nextInt(8);
+           y = cd.nextInt(11-ShipSize);
+           
+           if(CheckforShips(rand))
+           {
+               GenerateLoc();
+           }
+           else{
+               for(int i = 0; i < ShipSize;i++){
+                    board.gameBoard[x][y+i]=sym;
+               }
+           }             
+       }
+    }
+    //Generates the Location of ships on player2's board
+    public void GenerateLoc2(){
+       Random DownorRight = new Random();
+       int rand = DownorRight.nextInt(2);
+          
+       if(rand == 0){
+           x = cd.nextInt(9-ShipSize);
+           y = cd.nextInt(10);
+           
+            if(CheckforShips2(rand))
+            {
+                GenerateLoc2();
+            }
+            else{
+                for(int i = 0; i < ShipSize;i++){
+                    board.gameBoard2[x+i][y]=sym;
+                }   
+            }        
+       }
+       else if(rand == 1){
+           x = cd.nextInt(8);
+           y = cd.nextInt(11-ShipSize);
+           
+           if(CheckforShips2(rand))
+           {
+               GenerateLoc2();
+           }
+           else{
+               for(int i = 0; i < ShipSize;i++){
+                    board.gameBoard2[x][y+i]=sym;
+               }
+           }     
+       }
+    }
+    
+    
+    private boolean CheckforShips(int dor)
+    {
+       if(dor == 0)
+       {
+            for(int i = 0;i < ShipSize;i++)
+            {           
+                if(board.gameBoard[x+i][y].equals("B")||board.gameBoard[x+i][y].equals("C")||board.gameBoard[x+i][y].equals("S"))
+                    return true;        
+            }
+            return false;     
+       } 
+       else
+            for(int i = 0;i < ShipSize;i++)
+            {
+                if(board.gameBoard[x][y+i].equals("B")||board.gameBoard[x][y+i].equals("C")||board.gameBoard[x][y+i].equals("S"))
+                    return true;
+            }
+                return false;          
+    }
+    private boolean CheckforShips2(int dor)
+    {
+       if(dor == 0)
+       {
+            for(int i = 0;i < ShipSize;i++)
+            {
+                if(board.gameBoard2[x+i][y].equals("B")||board.gameBoard2[x+i][y].equals("C")||board.gameBoard2[x+i][y].equals("S"))
+                    return true;
+            }
+            return false;    
+       } 
+       else
+            for(int i = 0;i < ShipSize;i++)
+            {
+                if(board.gameBoard2[x][y+i].equals("B")||board.gameBoard2[x][y+i].equals("C")||board.gameBoard2[x][y+i].equals("S"))
+                    return true;
+            }
+                return false;      
+    }
+    
+    //Checks if there is a Ship positioned in location [x][y]
+    public static String CheckIfHit(int x, int y, int pTurn)
+    {
+        if(pTurn % 2 == 0)
+        {
+            if(board.gameBoard[x][y].equals("B"))
+            {
+                return "B";
+            }
+            else if(board.gameBoard[x][y].equals("C"))
+            {
+                return "C";
+            }
+            else if(board.gameBoard[x][y].equals("S"))
+            {
+                return "S";
+            }
+            else
+                return "~";
+        }
+        else 
+        {   
+            if(board.gameBoard2[x][y].equals("B"))
+            {
+                return "B";
+            }
+            else if(board.gameBoard2[x][y].equals("C"))
+            {
+                return "C";
+            }
+            else if(board.gameBoard2[x][y].equals("S"))
+            {
+                return "S";
+            }
+            else
+                return "~";      
+        }
+    }
+    //Subtracts 1 from the health of the specified ship
+    public void HitShip()
+    {
+      ShipHealth--;
+    }
+    //Checks if the ship's health is 0
+    public boolean Sunk()
+    {
+        return (ShipHealth == 0);                        
+    }
+}    
