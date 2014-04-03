@@ -1,0 +1,157 @@
+
+package battleshipfinal;
+
+import javax.swing.JOptionPane;
+
+public class Game {
+
+    
+    public static void main(String[] args) {
+         
+        //Setting the Ships in Position for player1
+        Ships BattleShip = new Ships(4);
+        BattleShip.GenerateLoc();
+        
+        Ships Cruiser = new Ships(3);
+        Cruiser.GenerateLoc();
+        
+        Ships Sub = new Ships(2);
+        Sub.GenerateLoc();
+        
+        //Setting the Ships in Position for player2
+        Ships BattleShip2 = new Ships(4);
+        BattleShip2.GenerateLoc2();
+        
+        Ships Cruiser2 = new Ships(3);
+        Cruiser2.GenerateLoc2();
+        
+        Ships Sub2 = new Ships(2);
+        Sub2.GenerateLoc2();
+        
+        //Creating the "empty" playing board
+        Board playingBoard = new Board();
+        
+        //This is just to demonstrate the location of the ships for testing purposes
+        Ships.printHiddenBoard();
+        
+        int turn = 0;
+        int player1 = 0;
+        int player2 = 0;
+        
+        while (true)
+        {
+            playingBoard.printBoard();
+            if(player1 == 3)
+            {
+                JOptionPane.showMessageDialog(null, "Congratulations Player 1, you have won the Game!!!");
+                break;
+            }
+            else if(player2 == 3)
+            {
+                JOptionPane.showMessageDialog(null, "Congratulations Player 2, you have won the Game!!!");
+                break;
+            }
+            turn++;
+            int x;
+            int y;
+            if(turn % 2 == 0)//player 2's turn
+            {
+                x = Integer.parseInt(JOptionPane.showInputDialog("PLAYER 2's TURN \nEnter the X coordinate of the Ship"));
+                y = Integer.parseInt(JOptionPane.showInputDialog("PLAYER 2's TURN \nEnter the Y coordinate of the Ship"));
+      
+                if(playingBoard.gameBoard[x][y].equals("X")||playingBoard.gameBoard[x][y].equals("*"))
+                {
+                    JOptionPane.showMessageDialog(null, "You have already picked those coordinates!\nPlease Try Again");
+                    turn--;
+                }
+                else if(Ships.CheckIfHit(x,y,turn).equals("~"))
+                {
+                    playingBoard.gameBoard[x][y] = "*";
+                    JOptionPane.showMessageDialog(null, "Sorry you Missed");                 
+                }      
+                else if(Ships.CheckIfHit(x, y, turn).equals("B"))
+                {
+                    playingBoard.gameBoard[x][y] = "X";
+                    JOptionPane.showMessageDialog(null, "YOU HIT A SHIP!!");
+                    BattleShip.HitShip();
+                    if(BattleShip.Sunk())
+                    {
+                        JOptionPane.showMessageDialog(null, "YOU HAVE SUNK PLAYER 1's BattleShip!!!");
+                        player2++;
+                    }
+                }           
+                else if(Ships.CheckIfHit(x, y, turn).equals("C"))
+                {
+                    JOptionPane.showMessageDialog(null, "YOU HIT A SHIP!!");
+                    playingBoard.gameBoard[x][y] = "X";
+                    Cruiser.HitShip();
+                    if(Cruiser.Sunk())
+                    {
+                        JOptionPane.showMessageDialog(null, "YOU HAVE SUNK PLAYER 1's Cruiser!!!");
+                        player2++;
+                    }
+                }              
+                else if(Ships.CheckIfHit(x, y, turn).equals("S"))
+                {
+                    JOptionPane.showMessageDialog(null, "YOU HIT A SHIP!!");
+                    playingBoard.gameBoard[x][y] = "X";
+                    Sub.HitShip();
+                    if(Sub.Sunk())
+                    {
+                        JOptionPane.showMessageDialog(null, "YOU HAVE SUNK PLAYER 1's Sub!!!");
+                        player2++;
+                    }
+                }     
+            }
+            else//If its player 1's turn
+            {
+                x = Integer.parseInt(JOptionPane.showInputDialog("PLAYER 1's TURN \nEnter the X coordinate of the Ship"));
+                y = Integer.parseInt(JOptionPane.showInputDialog("PLAYER 1's TURN \nEnter the Y coordinate of the Ship"));
+      
+                if(playingBoard.gameBoard2[x][y].equals("X")||playingBoard.gameBoard2[x][y].equals("*"))
+                {
+                    JOptionPane.showMessageDialog(null, "You have already picked those coordinates!\nPlease Try Again");
+                    turn--;
+                }
+                else if(Ships.CheckIfHit(x,y,turn).equals("~"))
+                {
+                    playingBoard.gameBoard2[x][y] = "*";
+                    JOptionPane.showMessageDialog(null, "Sorry you Missed");  
+                }
+                else if(Ships.CheckIfHit(x, y, turn).equals("B"))
+                {
+                    JOptionPane.showMessageDialog(null, "YOU HIT A SHIP!!");
+                    playingBoard.gameBoard2[x][y] = "X";
+                    BattleShip2.HitShip();
+                    if(BattleShip2.Sunk())
+                    {
+                        JOptionPane.showMessageDialog(null, "YOU HAVE SUNK PLAYER 2's BattleShip!!!");
+                        player1++;
+                    }
+                }
+                else if(Ships.CheckIfHit(x, y, turn).equals("C"))
+                {
+                    JOptionPane.showMessageDialog(null, "YOU HIT A SHIP!!");
+                    playingBoard.gameBoard2[x][y] = "X";
+                    Cruiser2.HitShip();
+                    if(Cruiser2.Sunk())
+                    {
+                        JOptionPane.showMessageDialog(null, "YOU HAVE SUNK PLAYER 2's Cruiser!!!");
+                        player1++;
+                    }
+                }
+                else if(Ships.CheckIfHit(x, y, turn).equals("S"))
+                {
+                    JOptionPane.showMessageDialog(null, "YOU HIT A SHIP!!");
+                    playingBoard.gameBoard2[x][y] = "X";
+                    Sub2.HitShip();
+                    if(Sub2.Sunk())
+                    {
+                        JOptionPane.showMessageDialog(null, "YOU HAVE SUNK PLAYER 2's Sub!!!");
+                        player1++;
+                    }
+                }            
+            }        
+        }
+    }     
+}
